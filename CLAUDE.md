@@ -35,7 +35,7 @@ check". It mirrors the Node SDK (`verifnow-node`), which is the reference for be
 
 ```bash
 python3 -m venv .venv
-.venv/bin/pip install -e . pytest mypy ruff build twine
+.venv/bin/pip install -e . pytest mypy==2.4.1 ruff==0.17.5 build twine   # versions as in pyproject
 .venv/bin/pytest -q            # no network: a fake transport, plus a loopback HTTP server
 .venv/bin/mypy                 # strict
 .venv/bin/ruff check . && .venv/bin/ruff format --check .

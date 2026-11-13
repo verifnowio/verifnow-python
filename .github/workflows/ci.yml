@@ -31,7 +31,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - run: python -m pip install -e . pytest mypy ruff
+      # Pinned like the dev group in pyproject.toml, so CI and a laptop check the same rules.
+      - run: python -m pip install -e . pytest mypy==2.4.1 ruff==0.17.5
       - run: ruff check .
       - run: ruff format --check .
       # Type-checked against the oldest supported version, so newer syntax is caught here.

@@ -47,7 +47,7 @@ Issues = "https://github.com/verifnowio/verifnow-python/issues"
 Changelog = "https://github.com/verifnowio/verifnow-python/blob/main/CHANGELOG.md"
 
 [dependency-groups]
-dev = ["pytest>=8", "mypy>=1.13", "ruff>=0.8", "build>=1.2", "twine>=6"]
+dev = ["pytest>=8", "mypy==2.4.1", "ruff==0.17.5", "build>=1.2", "twine>=6"]
 
 [tool.hatch.version]
 path = "src/verifnow/_version.py"
@@ -70,6 +70,8 @@ files = ["src", "tests"]
 [tool.ruff]
 line-length = 100
 target-version = "py310"
+# README snippets are aligned by hand for reading; they are not code to reformat.
+extend-exclude = ["*.md"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "S", "RUF", "SIM"]
