@@ -1,0 +1,78 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "verifnow"
+dynamic = ["version"]
+description = "Official Python SDK for the VerifNow validation API: email, phone, IBAN, VAT (VIES), SSN, SIN and NIF validation in one call."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "VerifNow" }]
+requires-python = ">=3.10"
+dependencies = []
+keywords = [
+    "verifnow",
+    "validation",
+    "email-validation",
+    "email-verification",
+    "iban",
+    "vat",
+    "vies",
+    "phone-validation",
+    "api-client",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://www.verifnow.io"
+Documentation = "https://docs.verifnow.io"
+Source = "https://github.com/verifnowio/verifnow-python"
+Issues = "https://github.com/verifnowio/verifnow-python/issues"
+Changelog = "https://github.com/verifnowio/verifnow-python/blob/main/CHANGELOG.md"
+
+[dependency-groups]
+dev = ["pytest>=8", "mypy>=1.13", "ruff>=0.8", "build>=1.2", "twine>=6"]
+
+[tool.hatch.version]
+path = "src/verifnow/_version.py"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/verifnow", "tests", "README.md", "CHANGELOG.md", "LICENSE"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/verifnow"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+
+[tool.mypy]
+strict = true
+python_version = "3.10"
+files = ["src", "tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "RUF", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106"]

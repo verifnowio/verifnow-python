@@ -1,0 +1,53 @@
+name: Publish to PyPI
+
+# Runs when a GitHub release is published. The release tag is the bare version (0.1.0, no "v"),
+# like the other VerifNow SDKs.
+#
+# Uses PyPI trusted publishing: PyPI trusts this workflow through GitHub's OIDC token, so no API
+# token is stored in the repository. The `pypi` environment can require a manual approval.
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Check the tag matches the package version
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          VERSION=$(python -c "import re,pathlib; print(re.search(r'__version__ = \"(.+?)\"', pathlib.Path('src/verifnow/_version.py').read_text()).group(1))")
+          echo "tag=$TAG package=$VERSION"
+          test "$TAG" = "$VERSION"
+      - run: python -m pip install -e . pytest build twine
+      - run: python -m pytest -q
+      - run: python -m build
+      - run: twine check --strict dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/verifnow/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
